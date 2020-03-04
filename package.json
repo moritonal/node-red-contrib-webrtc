@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-webrtc",
   "version": "0.0.1",
-  "description": "Custom node for Node-RED to setup WebRTC connections.",
+  "description": "Custom node for Node-RED to setup WebRTC connections",
   "main": "index.js",
   "scripts": {
     "release": "run-s release:*",
