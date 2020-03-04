@@ -1,0 +1,67 @@
+<script type="text/javascript">
+
+    console.log(window.require);
+
+    var randomWords = ["cherry", "delirious", "mammoth", "pretty", "head", "brass", "grey",
+        "frightening", "uppity", "fearful", "whole", "sink", "side", "tall", "cars", "brainy",
+        "roll", "vase", "porter", "poke", "polish", "five", "earn", "record"];
+
+    function randomSentence(options) {
+
+        var result = "";
+
+        var words = [];
+
+        for (var i = 0; i < 4; i++) {
+            words.push(randomWords[Math.floor(Math.random() * randomWords.length)]);
+        }
+
+        return words.join(" ");
+    }
+
+    const examplePeerID = randomSentence();
+
+    RED.nodes.registerType('webrtc-in', {
+        category: 'network',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            peerIdIn: {
+                value: examplePeerID,
+                required: true
+            },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "inject.png",
+        label: function () {
+            return this.name || "webrtc";
+        },
+        outputLabels: ["Output"]
+    });
+</script>
+
+<script type="text/html" data-template-name="webrtc-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-peerIdIn"><i class="icon-tag"></i>Peer ID</label>
+        <input type="text" id="node-input-peerIdIn" placeholder="Peer ID">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="webrtc-in">
+    <p>Connects a WebRTC connection via the PeerJS signalling framework</p>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Standard output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">json</span></dt>
+                <dd>Data sent from in</dd>
+            </dl>
+        </li>
+    </ol>
+</script>
