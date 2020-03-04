@@ -7,32 +7,37 @@ trigger:
     include: 
     - refs/tags/v*
 
-name: "Windows Release"
+name: "Build & Release"
 
 pool:
   vmImage: 'windows-latest'
 
-jobs:
-  - job: Build
-    steps:
-      - task: UseNode@1
+stages:
+  - stage: Build    
+    jobs:
+      - job: Build
+        steps:
+          - task: UseNode@1
 
-      - script: npm install
-        displayName: 'NPM Install'
+          - script: npm install
+            displayName: 'NPM Install'
 
-      - pwsh: |
-          mkdir ./artifacts
-          cd ./artifacts
-          npm pack ./../
-        displayName: "Packing up"
-      - publish: "./artifacts"
-        displayName: "Publishing artifacts"
+          - pwsh: |
+              mkdir ./artifacts
+              cd ./artifacts
+              npm pack ./../
+            displayName: "Packing up"
 
-  - job: Release
+          - publish: "./artifacts"
+            displayName: "Publishing artifacts"
+
+  - stage: Release
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
     dependsOn: [ "Build" ]
-    steps:
-      - task: Npm@1
-        inputs:
-          command: 'publish'
-          publishEndpoint: 'NPM JS'
+    jobs:
+      - job: Release
+        steps:
+          - task: Npm@1
+            inputs:
+              command: 'publish'
+              publishEndpoint: 'NPM JS'
